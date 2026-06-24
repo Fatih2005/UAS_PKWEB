@@ -62,12 +62,4 @@ Buka `http://127.0.0.1:8000`
 | `ticket_comments` | Diskusi pada tiket |
 | `password_reset_tokens` | Token reset password |
 
-## Dokumentasi
 
-- `Laporan_Proyek_Sistem_Ticketing.md` — Laporan lengkap bab 1-6
-- `Penjelasan_Kode_Proyek.txt` — Penjelasan per file (migration, model, controller, route)
-- `Script_Video_Tutorial_Ticketing.md` — Script video tutorial
-
-## Catatan
-
-Reset password saat ini disimpan plain-text di `password_reset_tokens`. Ini hanya untuk keperluan praktikum/lokal. Untuk production, tambahkan hashing token + SMTP integration.
