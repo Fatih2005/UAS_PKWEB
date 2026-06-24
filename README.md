@@ -1,57 +1,73 @@
-# Laravel Vulnerable Web App - Guestbook + Todo List
-## Mata Kuliah: Pemrograman Keamanan Web
+# Sistem Ticketing Helpdesk PT. Ujug-Ujug
+## Mata Kuliah: Pemrograman Keamanan Web (PKWEB) - UAS
 
-## Setup
-1. `composer create-project laravel/laravel:^11.0 vulnerable-app`
-2. Copy file di bawah ke struktur Laravel yang sesuai.
-3. `composer require spatie/laravel-activitylog` (opsional, untuk audit log demo)
-4. `php artisan migrate`
-5. `php artisan serve`
+Aplikasi helpdesk berbasis web untuk mengelola siklus hidup tiket secara terstruktur: pembuatan, penanganan, dan resolusi. Sistem ini mencakup autentikasi, otorisasi berbasis peran, manajemen kategori dan SLA, serta upload lampiran privat.
 
-## Vulnerability Matrix
-| ID | Lokasi | Jenis |
-|----|--------|-------|
-| V1 | `routes/web.php` | CSRF bypass (guestbook routes) |
-| V2 | `resources/views/guestbook/index.blade.php` | Stored XSS |
-| V3 | `app/Http/Controllers/GuestbookController.php` | SQL Injection (search) |
-| V4 | `app/Models/Todo.php` | Mass Assignment |
-| V5 | `app/Http/Controllers/TodoController.php` | IDOR (show/destroy tanpa ownership check) |
-| V6 | `app/Http/Controllers/TodoController.php:upload` | Insecure File Upload (original filename, no MIME check) |
-| V7 | `app/Http/Controllers/AuthController.php` | Session Fixation (tidak regenerate ID) |
-| V8 | `app/Http/Controllers/AuthController.php` | Weak Crypto (md5 password hashing) |
+## Tech Stack
 
-## Cara Test (Manual)
-### V1 CSRF Bypass
-Buat HTML di luar browser: `<form action="http://localhost:8000/guestbook/1" method="POST"><input name="_method" value="DELETE"><button>Delete</button></form>` => guestbook record terhapus tanpa token.
+- **Backend**: Laravel 13 (PHP 8.5+)
+- **Frontend**: Blade + Tailwind CSS + Font Awesome 6
+- **Database**: SQLite (`database/database.sqlite`)
+- **Authentication**: Session-based + bcrypt
 
-### V2 Stored XSS
-Posting guestbook dengan message: `<script>alert('xss')</script>` => alert muncul di halaman index.
+## Fitur
 
-### V3 SQL Injection
-Akses: `/guestbook/search?q=' OR 1=1 --` => semua record keluar.
+### Public
+- Registrasi & Login
+- Reset Password berbasis token
+- Logout
 
-### V4 Mass Assignment
-POST `/todo` dengan body `title=exploit&is_admin=1` => kolom is_admin terisi (jika kolom ada di tabel).
+### User (Pemegang Tiket)
+- Daftar tiket (miliknya / yang ditugaskan)
+- Buat tiket + upload lampiran privat
+- Detail tiket + komentar
+- Edit/delete tiket saat status `open`
+- Hapus komentar milik sendiri
 
-### V5 IDOR
-Login sebagai user A, buat todo ID 5. Login sebagai user B, akses `/todo/5` => user B bisa melihat/menghapus todo milik user A.
+### Admin
+- Manajemen kategori tiket (CRUD + SLA)
+- Assign petugas, ubah status/prioritas tiket
+- Lihat seluruh tiket pengguna lain
+- Edit/hapus komentar pengguna lain
 
-### V6 Insecure Upload
-Tidak berlaku lagi pada project ini. Lampiran sekarang disimpan pada disk `private` dengan nama berkas acak (`uniqid().ext`), sehingga tidak dapat diakses langsung lewat URL publik.
+## Keamanan
 
-### V7 Session Fixation
-Set session ID manual sebelum login, setelah login session ID tetap sama.
+| OWASP | Mitigasi |
+|-------|----------|
+| Broken Access Control | `canBeManagedBy()` + `AdminMiddleware` + abort 403 |
+| Cryptographic Failures | Password hash bcrypt (`Hash::make`/`Hash::check`) |
+| Injection | Eloquent ORM / Query Builder, tanpa raw concatenation |
+| Insecure Design | Token reset acak 60 char + base64 URL-safe encoding |
+| Security Misconfiguration | CSRF token, attachment disk `private`, session regenerate |
 
-### V8 Weak Crypto
-Register dengan password `password123`, lalu cek di database (`users.password`) => hash md5 plain text.
+## Instalasi
 
-## Remediation (untuk laporan)
-- V1: hapus dari except array pada VerifyCsrfToken
-- V2: gunakan `{{ $entry->message }}`, atau strip_tags/DOMPurify
-- V3: gunakan parameter binding: `where('name', 'like', "%$search%")`
-- V4: definisikan `$fillable` di model
-- V5: tambahkan middleware auth + ownership check `$todo->user_id === auth()->id()`
-- V6: validasi MIME type, generate random filename, simpan di luar webroot
-- V7: `$request->session()->regenerate();` setelah login
-- V8: pakai `Hash::make()` dan `Hash::check()` (bcrypt/default)
-"# UAS-PKWEB" 
+```bash
+composer install
+cp .env.example .env
+php artisan key:generate
+php artisan migrate
+php artisan serve
+```
+
+Buka `http://127.0.0.1:8000`
+
+## Struktur Database
+
+| Tabel | Fungsi |
+|-------|--------|
+| `users` | Akun user/admin (`is_admin`) |
+| `ticket_categories` | Kategori + SLA |
+| `tickets` | Tiket utama + lampiran + status + prioritas |
+| `ticket_comments` | Diskusi pada tiket |
+| `password_reset_tokens` | Token reset password |
+
+## Dokumentasi
+
+- `Laporan_Proyek_Sistem_Ticketing.md` — Laporan lengkap bab 1-6
+- `Penjelasan_Kode_Proyek.txt` — Penjelasan per file (migration, model, controller, route)
+- `Script_Video_Tutorial_Ticketing.md` — Script video tutorial
+
+## Catatan
+
+Reset password saat ini disimpan plain-text di `password_reset_tokens`. Ini hanya untuk keperluan praktikum/lokal. Untuk production, tambahkan hashing token + SMTP integration.
