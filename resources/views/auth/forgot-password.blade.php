@@ -40,7 +40,7 @@
                         class="w-full rounded-xl border-slate-300 bg-white/80 shadow-sm focus:border-brand-500 focus:ring-brand-500/20 transition-all"
                         placeholder="user@example.com">
                 </div>
-                <button type="submit" class="w-full gradient-brand text-white py-2.5 rounded-xl text-sm font-medium hover:shadow-lg hover:-translate-y-0.5 transition-all">
+                <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white py-2.5 rounded-xl text-sm font-medium transition-colors">
                     Kirim Link Reset
                 </button>
             </form>
