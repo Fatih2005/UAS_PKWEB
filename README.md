@@ -62,7 +62,6 @@ php artisan db:seed --class=AdminSeeder
 
 Akun yang tersedia:
 - Admin: `admin@ujug-ujug.test` / `Admin#123`
-- User biasa: `user@example.com` / `password`
 
 ## Struktur Database
 
