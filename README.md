@@ -46,7 +46,7 @@ Aplikasi helpdesk berbasis web untuk mengelola siklus hidup tiket secara terstru
 composer install
 copy .env.example .env
 php artisan key:generate
-php artisan migrate
+php artisan migrate:fresh --seed
 php artisan serve
 ```
 
@@ -54,13 +54,8 @@ Buka `http://127.0.0.1:8000`
 
 ## Akun Default
 
-Setelah migrate, jalankan seeder admin:
+Setelah migrate, akun admin sudah tersedia:
 
-```bash
-php artisan db:seed --class=AdminSeeder
-```
-
-Akun yang tersedia:
 - Admin: `admin@ujug-ujug.test` / `Admin#123`
 
 ## Struktur Database
