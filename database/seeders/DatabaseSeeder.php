@@ -14,5 +14,14 @@ class DatabaseSeeder extends Seeder
         $this->call([
             TicketCategorySeeder::class,
         ]);
+
+        User::updateOrCreate(
+            ['email' => 'admin@ujug-ujug.test'],
+            [
+                'name' => 'Admin',
+                'password' => Hash::make('Admin#123'),
+                'is_admin' => true,
+            ]
+        );
     }
 }
