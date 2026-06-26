@@ -112,10 +112,6 @@
                         Belum punya akun?
                         <a href="/register" class="text-brand-600 hover:text-brand-700 font-medium ml-1">Daftar sekarang</a>
                     </div>
-
-                    <div class="mt-6 pt-6 border-t border-slate-200 text-center text-sm text-slate-600">
-                        <a href="{{ route('password.request') }}" class="text-brand-600 hover:text-brand-700 font-medium">Lupa password?</a>
-                    </div>
                 </div>
             </div>
         </div>
