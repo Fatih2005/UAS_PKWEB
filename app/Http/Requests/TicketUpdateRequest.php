@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class TicketUpdateRequest extends FormRequest
 {
@@ -13,14 +14,19 @@ class TicketUpdateRequest extends FormRequest
 
     public function rules(): array
     {
-        return [
+        $rules = [
             'category_id' => ['nullable', 'exists:ticket_categories,id'],
             'title' => ['required', 'string', 'max:255'],
-            'priority' => ['required', 'string'],
-            'status' => ['required', 'string'],
+            'priority' => ['required', Rule::in(['low', 'medium', 'high', 'critical'])],
             'description' => ['nullable', 'string', 'max:5000'],
             'attachment' => ['nullable', 'file', 'max:5120', 'mimes:jpg,jpeg,png,pdf,zip,doc,docx'],
-            'assigned_to' => ['nullable', 'exists:users,id'],
         ];
+
+        if (auth()->user()->is_admin) {
+            $rules['status'] = ['required', Rule::in(['open', 'in_progress', 'resolved', 'closed'])];
+            $rules['assigned_to'] = ['nullable', 'exists:users,id'];
+        }
+
+        return $rules;
     }
 }

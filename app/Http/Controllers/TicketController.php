@@ -137,7 +137,19 @@ class TicketController extends Controller
             $data['attachment_path'] = $path;
         }
 
-        $ticket->update($data);
+        // Admin dapat mengubah semua field
+        if (Auth::user()->is_admin) {
+            $ticket->update($data);
+        } else {
+            // User hanya boleh mengubah field tertentu
+            $ticket->update([
+                'category_id' => $data['category_id'] ?? $ticket->category_id,
+                'title' => $data['title'],
+                'priority' => $data['priority'],
+                'description' => $data['description'] ?? $ticket->description,
+                'attachment_path' => $data['attachment_path'] ?? $ticket->attachment_path,
+            ]);
+        }
 
         return redirect()
             ->route('tickets.show', $ticket)
