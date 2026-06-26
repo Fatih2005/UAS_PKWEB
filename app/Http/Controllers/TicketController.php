@@ -113,18 +113,12 @@ class TicketController extends Controller
     public function update(TicketUpdateRequest $request, $ticket)
     {
         $ticket = Ticket::findOrFail($ticket);
-        $user = Auth::user();
 
-        if (! $ticket->canBeManagedBy($user)) {
+        if (! $ticket->canBeManagedBy(Auth::user())) {
             abort(403);
         }
 
         $data = $request->validated();
-
-        if (! $user->is_admin) {
-            $data['status'] = $ticket->status;
-            $data['assigned_to'] = $ticket->assigned_to;
-        }
 
         if ($request->hasFile('attachment')) {
             $file = $request->file('attachment');
