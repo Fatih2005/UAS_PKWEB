@@ -48,7 +48,7 @@
                         placeholder="Ulangi password baru">
                 </div>
 
-                <button type="submit" class="w-full gradient-brand text-white py-2.5 rounded-xl text-sm font-medium hover:shadow-lg hover:-translate-y-0.5 transition-all">
+                <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white py-2.5 rounded-xl text-sm font-medium transition-colors">
                     Reset Password
                 </button>
             </form>
