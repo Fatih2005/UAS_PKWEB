@@ -44,7 +44,7 @@ Aplikasi helpdesk berbasis web untuk mengelola siklus hidup tiket secara terstru
 
 ```bash
 composer install
-cp .env.example .env
+copy .env.example .env
 php artisan key:generate
 php artisan migrate
 php artisan serve
