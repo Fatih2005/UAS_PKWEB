@@ -14,23 +14,5 @@ class DatabaseSeeder extends Seeder
         $this->call([
             TicketCategorySeeder::class,
         ]);
-
-        $admin = User::updateOrCreate(
-            ['email' => 'admin@example.com'],
-            [
-                'name' => 'Admin',
-                'password' => Hash::make('password'),
-                'is_admin' => true,
-            ]
-        );
-
-        $regularUser = User::updateOrCreate(
-            ['email' => 'user@example.com'],
-            [
-                'name' => 'Regular User',
-                'password' => Hash::make('password'),
-                'is_admin' => false,
-            ]
-        );
     }
 }

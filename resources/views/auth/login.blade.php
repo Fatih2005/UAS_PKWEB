@@ -113,10 +113,8 @@
                         <a href="/register" class="text-brand-600 hover:text-brand-700 font-medium ml-1">Daftar sekarang</a>
                     </div>
 
-                    <div class="mt-6 p-4 rounded-xl bg-slate-50 border border-slate-200 text-xs text-slate-500 leading-relaxed">
-                        <p class="font-medium text-slate-700 mb-1">Demo akun:</p>
-                        <p>Admin: <span class="font-mono text-slate-700">admin@example.com</span> / <span class="font-mono text-slate-700">password</span></p>
-                        <p>User: <span class="font-mono text-slate-700">user@example.com</span> / <span class="font-mono text-slate-700">password</span></p>
+                    <div class="mt-6 pt-6 border-t border-slate-200 text-center text-sm text-slate-600">
+                        <a href="{{ route('password.request') }}" class="text-brand-600 hover:text-brand-700 font-medium">Lupa password?</a>
                     </div>
                 </div>
             </div>

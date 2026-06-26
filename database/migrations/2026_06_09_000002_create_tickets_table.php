@@ -11,7 +11,7 @@ return new class extends Migration
         Schema::create('tickets', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained()->cascadeOnDelete();
-            $table->foreignId('category_id')->nullable()->constrained()->nullOnDelete();
+            $table->foreignId('category_id')->nullable()->constrained('ticket_categories')->nullOnDelete();
             $table->foreignId('assigned_to')->nullable()->constrained('users')->nullOnDelete();
             $table->string('title');
             $table->string('priority')->default('medium');
