@@ -52,17 +52,6 @@ php artisan serve
 
 Buka `http://127.0.0.1:8000`
 
-## Git / Persiapan Project (baru)
-
-Jika menjalankan repo hasil clone atau fresh pull dari repo ini, lakukan langkah inisialisasi lokal terlebih dahulu:
-
-```bash
-composer install
-cp .env.example .env
-php artisan key:generate
-php artisan migrate
-```
-
 ## Akun Default
 
 Setelah migrate, jalankan seeder admin:
