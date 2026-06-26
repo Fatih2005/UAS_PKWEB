@@ -52,6 +52,18 @@ php artisan serve
 
 Buka `http://127.0.0.1:8000`
 
+## Akun Default
+
+Setelah migrate, jalankan seeder admin:
+
+```bash
+php artisan db:seed --class=AdminSeeder
+```
+
+Akun yang tersedia:
+- Admin: `admin@ujug-ujug.test` / `Admin#123`
+- User biasa: `user@example.com` / `password`
+
 ## Struktur Database
 
 | Tabel | Fungsi |
