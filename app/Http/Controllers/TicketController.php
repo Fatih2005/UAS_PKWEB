@@ -120,6 +120,11 @@ class TicketController extends Controller
 
         $data = $request->validated();
 
+        $user = Auth::user();
+        if (! $user->is_admin) {
+            unset($data['status'], $data['assigned_to']);
+        }
+
         if ($request->hasFile('attachment')) {
             $file = $request->file('attachment');
 
